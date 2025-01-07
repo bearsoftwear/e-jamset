@@ -20,3 +20,6 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 // todo install spatie
+
+Route::resource('/landers', \App\Http\Controllers\LanderController::class);
+Route::resource('/assets', \App\Http\Controllers\AssetController::class);
