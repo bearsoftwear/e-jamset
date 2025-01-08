@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lander_id')->constrained()->cascadeOnUpdate();
+            $table->foreignId('landers_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('location');
-            $table->decimal('rental_price');
+            $table->decimal('rental_price',10,2);
             $table->string('image');
             $table->timestamps();
 

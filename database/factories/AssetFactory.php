@@ -17,10 +17,10 @@ class AssetFactory extends Factory
     public function definition(): array
     {
         return [
-            'lander_id' => fake()->randomDigitNotNull(),
+            'landers_id' => fake()->randomDigitNotNull(),
             'name' => fake()->company(),
             'location' => fake()->country(),
-            'rental_price' => fake()->randomNumber(7),
+            'rental_price' => fake()->randomNumber(7, true),
             'image' => fake()->imageUrl(100,100),
         ];
     }
