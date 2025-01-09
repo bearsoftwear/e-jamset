@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assets', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lander_id')->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->string('location');
-            $table->decimal('rental_price',10,2);
-            $table->string('image');
             $table->timestamps();
-
-            $table->softDeletes();
         });
     }
 
@@ -29,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assets');
+        Schema::dropIfExists('transactions');
     }
 };

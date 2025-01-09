@@ -3,9 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\AssetController::class, 'welcome'])->name('welcome');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -17,7 +15,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-Route::resource('/landers', \App\Http\Controllers\LanderController::class);
+Route::resource('/lander', \App\Http\Controllers\LanderController::class);
 Route::resource('/assets', \App\Http\Controllers\AssetController::class);
+
+// todo welcome page not login, and give different about user lander and borrower, give pagination,
+// todo factory transaction, and give banner if the lander have approval from borrower

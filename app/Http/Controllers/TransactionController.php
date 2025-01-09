@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class AssetController extends Controller
+class TransactionController extends Controller
 {
-    public function welcome()
-    {
-        $assets = Asset::with('lander')->paginate(5);
-        return view('welcome', compact('assets'));
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -40,7 +34,7 @@ class AssetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Asset $asset)
+    public function show(Transaction $transaction)
     {
         //
     }
@@ -48,7 +42,7 @@ class AssetController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Asset $asset)
+    public function edit(Transaction $transaction)
     {
         //
     }
@@ -56,7 +50,7 @@ class AssetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Asset $asset)
+    public function update(Request $request, Transaction $transaction)
     {
         //
     }
@@ -64,7 +58,7 @@ class AssetController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Asset $asset)
+    public function destroy(Transaction $transaction)
     {
         //
     }

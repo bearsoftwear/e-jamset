@@ -17,11 +17,11 @@ class AssetFactory extends Factory
     public function definition(): array
     {
         return [
-            'landers_id' => fake()->randomDigitNotNull(),
+            'lander_id' => fake()->randomDigitNotNull(),
             'name' => fake()->company(),
             'location' => fake()->country(),
             'rental_price' => fake()->randomNumber(7, true),
-            'image' => fake()->imageUrl(100,100),
+            'image' => 'https://picsum.photos/seed/' . fake()->randomNumber(2, true) . '/256',
         ];
     }
 }
