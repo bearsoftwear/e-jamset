@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Lander;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class AssetFactory extends Factory
     public function definition(): array
     {
         return [
-            'lander_id' => fake()->randomDigitNotNull(),
+            'lander_id' => Lander::inRandomOrder()->first(),
             'name' => fake()->company(),
             'location' => fake()->country(),
             'rental_price' => fake()->randomNumber(7, true),

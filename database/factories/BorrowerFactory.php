@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class BorrowerFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => fake()->boolean() ? User::factory()->create()->assignRole('borrower') : null,
             'name' => fake()->name
         ];
     }

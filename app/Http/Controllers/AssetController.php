@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use App\Models\Lander;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
@@ -18,7 +21,10 @@ class AssetController extends Controller
      */
     public function index()
     {
-        //
+        $landerAssets = Lander::with('assets')->find(Auth::id());
+        // return $landerAssets;
+        return view('dashboard', compact('landerAssets'));
+        // todo error
     }
 
     /**
