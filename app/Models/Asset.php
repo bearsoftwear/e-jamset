@@ -18,4 +18,9 @@ class Asset extends Model
     {
         return $this->belongsTo(Lander::class);
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

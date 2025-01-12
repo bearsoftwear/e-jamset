@@ -15,8 +15,9 @@ return new class extends Migration {
             $table->string('event');
             $table->string('booking_code')->unique();
             $table->foreignId('asset_id')->constrained()->cascadeOnDelete();
+            $table->enum('approval', ['wait','accept','deny'])->default('wait');
             $table->dateTime('start_date');
-            $table->dateTime('finish_date');
+            $table->dateTime('finish_date')->nullable();
             $table->foreignId('borrower_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
 

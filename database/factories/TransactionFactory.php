@@ -22,8 +22,9 @@ class TransactionFactory extends Factory
             'event' => fake()->jobTitle(),
             'booking_code' => fake()->numerify('####' . now()->year . '####'),
             'asset_id' => Asset::inRandomOrder()->first(),
+            'approval' => fake()->randomElement(['wait', 'accept', 'deny']),
             'start_date' => fake()->dateTime(),
-            'finish_date' => fake()->dateTime(),
+            'finish_date' => fake()->boolean() ? fake()->dateTime() : null,
             'borrower_id' => fake()->boolean() ? Borrower::inRandomOrder(1)->first() : null,
         ];
     }

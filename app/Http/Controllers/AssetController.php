@@ -21,10 +21,24 @@ class AssetController extends Controller
      */
     public function index()
     {
-        $landerAssets = Lander::with('assets')->find(Auth::id());
-        // return $landerAssets;
-        return view('dashboard', compact('landerAssets'));
-        // todo error
+        // $assets = Asset::where('lander_id', Auth::id())
+        //            ->whereHas('transaction', function ($query) {
+        //            $query->where('approval', 'wait');
+        //            })
+        //            ->with('transaction')
+        //            ->paginate(5);
+        $assets = Asset::where('lander_id', Auth::id())->with('transaction')->paginate(5);
+        // return $assets;
+        return view('dashboard', compact('assets'));
+        // todo table lander show asset and transaction provit in 1 year
+        // todo banner show asset need approval
+    }
+    /**
+     * Find assets by lander_id.
+     */
+    public function findByLanderId($landerId)
+    {
+
     }
 
     /**
