@@ -20,15 +20,14 @@
         </div>
         <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
             <p class="text-sm/6 text-gray-900">
-                <strong class="font-semibold">GeneriCon 2023</strong>
+                <strong class="font-semibold">Asset Need Approval</strong>
                 <svg viewBox="0 0 2 2" class="mx-2 inline size-0.5 fill-current" aria-hidden="true">
                     <circle cx="1" cy="1" r="1"/>
                 </svg>
-                Join us in Denver from June 7 – 9 to see what’s coming next.
+                {{ $approval }} assets need approval.
             </p>
             <a href="#"
-               class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">Register
-                now <span aria-hidden="true">&rarr;</span></a>
+               class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">Approval Now <span aria-hidden="true">&rarr;</span></a>
         </div>
         <div class="flex flex-1 justify-end">
             {{--
@@ -51,21 +50,21 @@
                 <div class="px-6 text-gray-900">
                     {{-- Assets List --}}
                     <ul role="list" class="divide-y divide-gray-100">
-                        @foreach($assets as $asset)
+                        @foreach($transactions as $transaction)
                             <li class="flex justify-between gap-x-6 py-5">
                                 <div class="flex min-w-0 gap-x-4">
                                     <img class="size-12 flex-none rounded-full bg-gray-50"
-                                         src="{{ $asset->image }}"
+                                         src="{{ $transaction->asset->image }}"
                                          alt="">
                                     <div class="min-w-0 flex-auto">
-                                        <p class="text-sm/6 font-semibold text-gray-900">{{ $asset->name }}</p>
+                                        <p class="text-sm/6 font-semibold text-gray-900">{{ $transaction->asset->name }}</p>
                                         <p class="mt-1 truncate text-xs/5 text-gray-500">
-                                            {{ $asset->name }}</p>
+                                            {{ $transaction->asset->name }}</p>
                                     </div>
                                 </div>
                                 <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                    <p class="text-sm/6 text-gray-900">{{ $asset->location }}</p>
-                                    <p class="mt-1 text-xs/5 text-gray-500">{{ $asset->rental_price }}
+                                    <p class="text-sm/6 text-gray-900">{{ $transaction->asset->location }}</p>
+                                    <p class="mt-1 text-xs/5 text-gray-500">{{ $transaction->asset->rental_price }}
                                         <time datetime="2023-01-23T13:23Z">/ Day</time>
                                     </p>
                                 </div>
@@ -75,9 +74,6 @@
                     </ul>
                     {{-- Assets List --}}
                 </div>
-                {{-- Pagination --}}
-                {{ $assets->links() }}
-                {{-- Pagination --}}
             </div>
         </div>
     </div>
