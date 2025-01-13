@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Asset;
 use App\Models\Borrower;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,9 +24,19 @@ class TransactionFactory extends Factory
             'booking_code' => fake()->numerify('####' . now()->year . '####'),
             'asset_id' => Asset::inRandomOrder()->first(),
             'approval' => fake()->randomElement(['wait', 'accept', 'deny']),
-            'start_date' => fake()->dateTime(),
-            'finish_date' => fake()->boolean() ? fake()->dateTime() : null,
-            'borrower_id' => fake()->boolean() ? Borrower::inRandomOrder(1)->first() : null,
+            'start_date' => now(),
+            'borrower_id' => fake()->boolean() ? Borrower::inRandomOrder(1)->first() : Borrower::factory()->create(),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Transaction $transaction) {
+            if ($transaction->approval === 'accept') {
+                $transaction->update(['finish_date' => fake()->dateTimeBetween('now', '+'.fake()->numberBetween(1,7).' days')]);
+            } else {
+                $transaction->update(['finish_date' => null]);
+            }
+        });
     }
 }

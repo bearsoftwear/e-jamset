@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
 
         Asset::factory(50)->create();
         Borrower::factory(10)->create();
-        Transaction::factory(100)->create();
+        Transaction::factory(200)->create();
 
         User::factory()->create([
             'name' => 'Admin ' . fake()->name(),

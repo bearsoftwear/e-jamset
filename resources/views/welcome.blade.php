@@ -1,3 +1,10 @@
+<?php
+use App\Models\Asset;
+
+$assets = Asset::with('lander')->paginate(5);
+
+?>
+
 <x-app-layout>
     <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
