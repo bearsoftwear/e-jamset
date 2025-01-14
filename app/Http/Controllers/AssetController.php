@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Transaction;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,20 +20,13 @@ class AssetController extends Controller
          * Get profit by (finish_date - start_date) * rental_price in 1 year.
          * Count asset need approval.
          */
-
-        $transactions = Transaction::where('approval', 'wait')->withWhereHas('asset', function($query){
+        $transactions = Transaction::where('approval', 'wait')->withWhereHas('asset', function ($query) {
             $query->where('lander_id', Auth::id());
-        } )->get();
+        })->get();
         $approval = $transactions->count();
-        return view('dashboard', compact('transactions', 'approval'));
-        // todo table lander show asset and transaction provit in 1 year, profit = (finish_date - start_date) * rental_price, diffindays wrong
-}
-    /**
-     * Find assets by lander_id.
-     */
-    public function findByLanderId($landerId)
-    {
 
+        return view('asset.index', compact('transactions', 'approval'));
+        // TODO: recreate make it simple just select asset from lander_id
     }
 
     /**
@@ -42,7 +34,7 @@ class AssetController extends Controller
      */
     public function create()
     {
-        //
+        return view('asset.create');
     }
 
     /**
@@ -50,7 +42,23 @@ class AssetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'name' => 'required',
+            'location' => 'required',
+            'rental_price' => 'required',
+            'image' => 'required',
+        ]);
+
+        Asset::create([
+            'lander_id' => Auth::id(),
+            'name' => $request->name,
+            'location' => $request->location,
+            'rental_price' => $request->rental_price,
+            'image' => $request->image,
+        ]);
+
+        return redirect(route('assets.index'));
     }
 
     /**

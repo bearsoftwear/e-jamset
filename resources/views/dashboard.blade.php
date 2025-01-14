@@ -1,3 +1,14 @@
+<?php
+//DASHBOARD IS TRANSACTION
+use App\Models\Transaction;
+
+$transactions = Transaction::where('approval', 'wait')->withWhereHas('asset', function ($query) {
+    $query->where('lander_id', Auth::id());
+})->get();
+$approval = $transactions->count();
+
+?>
+
 <x-app-layout>
     {{--
     <x-slot name="header">
@@ -27,7 +38,8 @@
                 {{ $approval }} assets need approval.
             </p>
             <a href="#"
-               class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">Approval Now <span aria-hidden="true">&rarr;</span></a>
+               class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">Approval
+                Now <span aria-hidden="true">&rarr;</span></a>
         </div>
         <div class="flex flex-1 justify-end">
             {{--

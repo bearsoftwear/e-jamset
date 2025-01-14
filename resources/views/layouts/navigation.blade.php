@@ -11,13 +11,30 @@
                 </div>
 
                 <!-- Navigation Links -->
-                @auth
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
-                    </div>
-                @endauth
+                @role('admin|lander')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('assets.index')" :active="request()->routeIs('assets.*')">
+                        {{ __('Assets') }}
+                    </x-nav-link>
+                </div>
+                @endrole
+                @role('admin')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('lander.index')" :active="request()->routeIs('lander.*')">
+                        {{ __('Lander') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('borrower.index')" :active="request()->routeIs('borrower.*')">
+                        {{ __('Borrower') }}
+                    </x-nav-link>
+                </div>
+                @endrole
             </div>
             @guest
                 <div class="flex">
