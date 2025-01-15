@@ -1,14 +1,3 @@
-<?php
-//DASHBOARD IS TRANSACTION
-use App\Models\Transaction;
-
-$transactions = Transaction::where('approval', 'wait')->withWhereHas('asset', function ($query) {
-    $query->where('lander_id', Auth::id());
-})->get();
-$approval = $transactions->count();
-
-?>
-
 <x-app-layout>
     {{--
     <x-slot name="header">
@@ -17,74 +6,73 @@ $approval = $transactions->count();
         </h2>
     </x-slot>
     --}}
-    <div
-        class="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
-        <div class="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-             aria-hidden="true">
-            <div class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-                 style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"></div>
-        </div>
-        <div class="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
-             aria-hidden="true">
-            <div class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-                 style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"></div>
-        </div>
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <p class="text-sm/6 text-gray-900">
-                <strong class="font-semibold">Asset Need Approval</strong>
-                <svg viewBox="0 0 2 2" class="mx-2 inline size-0.5 fill-current" aria-hidden="true">
-                    <circle cx="1" cy="1" r="1"/>
-                </svg>
-                {{ $approval }} assets need approval.
-            </p>
-            <a href="#"
-               class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">Approval
-                Now <span aria-hidden="true">&rarr;</span></a>
-        </div>
-        <div class="flex flex-1 justify-end">
-            {{--
-            <button type="button" class="-m-3 p-3 focus-visible:outline-offset-[-4px]">
-                <span class="sr-only">Dismiss</span>
-                <svg class="size-5 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
-                     data-slot="icon">
-                    <path
-                        d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"/>
-                </svg>
-            </button>
-            --}}
-        </div>
-    </div>
 
 
     <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="px-6 text-gray-900">
-                    {{-- Assets List --}}
-                    <ul role="list" class="divide-y divide-gray-100">
-                        @foreach($transactions as $transaction)
-                            <li class="flex justify-between gap-x-6 py-5">
-                                <div class="flex min-w-0 gap-x-4">
-                                    <img class="size-12 flex-none rounded-full bg-gray-50"
-                                         src="{{ $transaction->asset->image }}"
-                                         alt="">
-                                    <div class="min-w-0 flex-auto">
-                                        <p class="text-sm/6 font-semibold text-gray-900">{{ $transaction->asset->name }}</p>
-                                        <p class="mt-1 truncate text-xs/5 text-gray-500">
-                                            {{ $transaction->asset->name }}</p>
-                                    </div>
-                                </div>
-                                <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                    <p class="text-sm/6 text-gray-900">{{ $transaction->asset->location }}</p>
-                                    <p class="mt-1 text-xs/5 text-gray-500">{{ $transaction->asset->rental_price }}
-                                        <time datetime="2023-01-23T13:23Z">/ Day</time>
-                                    </p>
-                                </div>
-                            </li>
+                <div class="p-6 text-gray-900">
+                    <!--
+{
+    "id": 3,
+    "event": "Casting Machine Set-Up Operator",
+    "booking_code": "146020257727",
+    "asset_id": 31,
+    "approval": "wait",
+    "start_date": "2025-01-13T12:41:27.000000Z",
+    "finish_date": null,
+    "borrower_id": 12,
+    "borrower": {
+      "id": 12,
+      "user_id": 15,
+      "name": "Rosamond Koch"
+    },
+    "asset": {
+      "id": 31,
+      "lander_id": 1,
+      "name": "Stiedemann-Barton",
+      "location": "American Samoa",
+      "rental_price": 8092433,
+      "image": "https://picsum.photos/seed/19/256"
+    }
+  },
+  TODO: table list transaction and approval
+-->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+                            <thead class="ltr:text-left rtl:text-right">
+                            <tr>
+                                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Name</th>
+                                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Date of Birth</th>
+                                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Role</th>
+                                <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Salary</th>
+                            </tr>
+                            </thead>
 
-                        @endforeach
-                    </ul>
-                    {{-- Assets List --}}
+                            <tbody class="divide-y divide-gray-200">
+                            <tr class="odd:bg-gray-50">
+                                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">John Doe</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">Web Developer</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">$120,000</td>
+                            </tr>
+
+                            <tr class="odd:bg-gray-50">
+                                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Jane Doe</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">04/11/1980</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">Web Designer</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">$100,000</td>
+                            </tr>
+
+                            <tr class="odd:bg-gray-50">
+                                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Gary Barlow</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">Singer</td>
+                                <td class="whitespace-nowrap px-4 py-2 text-gray-700">$20,000</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
-use App\Models\Transaction;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,13 +20,17 @@ class AssetController extends Controller
          * Get profit by (finish_date - start_date) * rental_price in 1 year.
          * Count asset need approval.
          */
-        $transactions = Transaction::where('approval', 'wait')->withWhereHas('asset', function ($query) {
-            $query->where('lander_id', Auth::id());
-        })->get();
-        $approval = $transactions->count();
 
-        return view('asset.index', compact('transactions', 'approval'));
-        // TODO: recreate make it simple just select asset from lander_id
+        $assets = Asset::withCount([
+            'transactions as finished' => function (Builder $query) {
+                $query->whereNotNull('finish_date');
+            },
+            'transactions as waiting' => function (Builder $query) {
+                $query->where('approval', '=', 'wait');
+            },
+        ])->where('lander_id', Auth::id())->get();
+
+        return view('asset.index', compact('assets'));
     }
 
     /**

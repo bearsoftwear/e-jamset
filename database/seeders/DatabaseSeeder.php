@@ -7,10 +7,8 @@ use App\Models\Borrower;
 use App\Models\Lander;
 use App\Models\Transaction;
 use App\Models\User;
-
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
@@ -25,7 +23,7 @@ class DatabaseSeeder extends Seeder
         );
 
         User::factory()->create([
-            'name' => 'Lander ' . fake()->name(),
+            'name' => 'Lander '.fake()->name(),
             'email' => 'lander@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
@@ -39,7 +37,7 @@ class DatabaseSeeder extends Seeder
         Transaction::factory(200)->create();
 
         User::factory()->create([
-            'name' => 'Admin ' . fake()->name(),
+            'name' => 'Admin '.fake()->name(),
             'email' => 'bearsoftwear@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('password'),

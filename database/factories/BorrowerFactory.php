@@ -19,7 +19,7 @@ class BorrowerFactory extends Factory
     {
         return [
             'user_id' => fake()->boolean() ? User::factory()->create()->assignRole('borrower') : null,
-            'name' => fake()->name
+            'name' => fake()->name,
         ];
     }
 }

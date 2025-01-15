@@ -22,7 +22,7 @@ class AssetFactory extends Factory
             'name' => fake()->company(),
             'location' => fake()->country(),
             'rental_price' => fake()->randomNumber(7, true),
-            'image' => 'https://picsum.photos/seed/' . fake()->randomNumber(2, true) . '/256',
+            'image' => 'https://picsum.photos/seed/'.fake()->randomNumber(2, true).'/256',
         ];
     }
 }
