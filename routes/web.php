@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'welcome')->name('welcome');
 
 Route::get('/dashboard', [TransactionController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::resource('/assets', AssetController::class);
 
 Route::middleware('auth')->group(function () {
-    Route::resource('/assets', AssetController::class);
     Route::resource('/lander', LanderController::class);
     Route::resource('/borrower', BorrowerController::class);
     Route::resource('/transaction', TransactionController::class);

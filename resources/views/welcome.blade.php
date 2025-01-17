@@ -1,40 +1,39 @@
 <?php
+
 use App\Models\Asset;
 
-$assets = Asset::with('lander')->paginate(5);
-
+$assets = Asset::with('lander')->paginate(12);
 ?>
 
 <x-app-layout>
     <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="px-6 text-gray-900">
+                <div class="p-6 text-gray-900">
+
                     {{-- Assets List --}}
-                    <ul role="list" class="divide-y divide-gray-100">
+                    <div class="grid grid-cols-4 gap-4">
                         @foreach($assets as $asset)
-                            <li class="flex justify-between gap-x-6 py-5">
-                                <div class="flex min-w-0 gap-x-4">
-                                    <img class="size-12 flex-none rounded-full bg-gray-50"
-                                         src="{{ $asset->image }}"
-                                         alt="">
-                                    <div class="min-w-0 flex-auto">
-                                        <p class="text-sm/6 font-semibold text-gray-900">{{ $asset->name }}</p>
-                                        <p class="mt-1 truncate text-xs/5 text-gray-500">
-                                            {{ $asset->lander->name }}</p>
+                            <a href="{{ route('assets.show', $asset->id) }}">
+                                <div class="relative mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow">
+                                    <div>
+                                        <img src="{{ $asset->image }}" class="w-full object-cover" alt=""/>
+                                    </div>
+                                    <div class="absolute inset-0 z-10 bg-gradient-to-t from-black"></div>
+                                    <div class="absolute inset-x-0 bottom-0 z-20 p-4">
+                                        <p class="text-sm text-white text-opacity-80">{{ $asset->lander->name }}
+                                        </p>
+                                        <h3 class="text-xl font-medium text-white">{{ $asset->name }}</h3>
+                                        <p class="text-white text-opacity-80">{{ $asset->location }}</p>
+                                        <p class="mt-2 text-xs text-white text-opacity-80">
+                                            {{ "Rp".number_format($asset->rental_price, 0, ',', '.'). " / Day" }}
+                                        </p>
                                     </div>
                                 </div>
-                                <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                    <p class="text-sm/6 text-gray-900">{{ $asset->location }}</p>
-                                    <p class="mt-1 text-xs/5 text-gray-500">{{ $asset->rental_price }}
-                                        <time datetime="2023-01-23T13:23Z">/ Day</time>
-                                    </p>
-                                </div>
-                            </li>
-
+                            </a>
                         @endforeach
-                    </ul>
-                    {{-- Assets List --}}
+                    </div>
+
                 </div>
                 {{-- Pagination --}}
                 {{ $assets->onEachSide(1)->links() }}

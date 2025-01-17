@@ -20,7 +20,6 @@ class AssetController extends Controller
          * Get profit by (finish_date - start_date) * rental_price in 1 year.
          * Count asset need approval.
          */
-
         $assets = Asset::withCount([
             'transactions as finished' => function (Builder $query) {
                 $query->whereNotNull('finish_date');
@@ -70,7 +69,8 @@ class AssetController extends Controller
      */
     public function show(Asset $asset)
     {
-        //
+        // $asset->with('transactions')->get();
+        return view('asset.show', compact('asset'));
     }
 
     /**

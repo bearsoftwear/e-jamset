@@ -14,9 +14,13 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::where('approval', 'wait')->with('borrower')->withWhereHas('asset', function (Builder $query) {
-            $query->where('lander_id', Auth::id());
-        })->get();
+        // $transactions = Transaction::where('approval', 'wait')->with('borrower')->withWhereHas('asset', function (Builder $query) {
+
+        $transactions = Transaction::with('borrower')
+            ->withWhereHas('asset', function (Builder $query) {
+                $query->where('lander_id', Auth::id());
+            })->orderByDesc('approval')
+            ->get();
 
         return view('dashboard', compact('transactions'));
     }

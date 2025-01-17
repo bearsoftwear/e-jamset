@@ -1,5 +1,7 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
+import headless from '@headlessui/tailwindcss';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -14,11 +16,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            gridTemplateRows: {
+                '[auto,auto,1fr]': 'auto auto 1fr',
+            },
         },
     },
 
     plugins: [
-        require('@headlessui/tailwindcss')({prefix: 'ui'}),
+        typography,
+        headless,
         forms,
     ],
 };
