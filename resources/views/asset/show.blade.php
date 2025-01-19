@@ -36,35 +36,33 @@
                                         <h3 class="sr-only">Reviews</h3>
                                         <div class="flex items-center">
                                             <div class="flex items-center">
-                                                <!-- Active: "text-gray-900", Default: "text-gray-200" -->
-                                                <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                                    <path fill-rule="evenodd"
-                                                          d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
-                                                          clip-rule="evenodd"/>
-                                                </svg>
-                                                <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                                    <path fill-rule="evenodd"
-                                                          d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
-                                                          clip-rule="evenodd"/>
-                                                </svg>
-                                                <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                                    <path fill-rule="evenodd"
-                                                          d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
-                                                          clip-rule="evenodd"/>
-                                                </svg>
-                                                <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                                    <path fill-rule="evenodd"
-                                                          d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
-                                                          clip-rule="evenodd"/>
-                                                </svg>
-                                                <svg class="size-5 shrink-0 text-gray-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                                    <path fill-rule="evenodd"
-                                                          d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
-                                                          clip-rule="evenodd"/>
-                                                </svg>
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($asset->star_rating >= $i)
+                                                        <!-- Full star -->
+                                                        <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                                            <path fill-rule="evenodd"
+                                                                  d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
+                                                                  clip-rule="evenodd"/>
+                                                        </svg>
+                                                    @elseif ($asset->star_rating > $i - 1)
+                                                        <!-- Half star -->
+                                                        <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="clip-path: inset(0 50% 0 0);">
+                                                            <path fill-rule="evenodd"
+                                                                  d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
+                                                                  clip-rule="evenodd"/>
+                                                        </svg>
+                                                    @else
+                                                        <!-- Empty star -->
+                                                        <svg class="size-5 shrink-0 text-gray-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                                            <path fill-rule="evenodd"
+                                                                  d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
+                                                                  clip-rule="evenodd"/>
+                                                        </svg>
+                                                    @endif
+                                                @endfor
                                             </div>
-                                            <p class="sr-only">4 out of 5 stars</p>
-                                            <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">117 reviews</a>
+                                            <p class="sr-only">2 out of 5 stars</p>
+                                            <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">{{ $asset->reviewer }} reviews</a>
                                         </div>
                                     </div>
 
@@ -72,6 +70,33 @@
                                         <!-- Colors -->
                                         <div>
                                             <h3 class="text-sm font-medium text-gray-900">Color</h3>
+                                            // todo datetime picker
+
+
+                                            <div id="date-range-picker" date-rangepicker class="flex items-center">
+                                                <div class="relative">
+                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <input id="datepicker-range-start" name="start" type="text"
+                                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                           placeholder="Select date start">
+                                                </div>
+                                                <span class="mx-4 text-gray-500">to</span>
+                                                <div class="relative">
+                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <input id="datepicker-range-end" name="end" type="text"
+                                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                           placeholder="Select date end">
+                                                </div>
+                                            </div>
+
 
                                             <fieldset aria-label="Choose a color" class="mt-4">
                                                 <div class="flex items-center gap-x-3">
@@ -188,7 +213,8 @@
                                         </div>
 
                                         <button type="submit"
-                                                class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag
+                                                class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                            Reserve
                                         </button>
                                     </form>
                                 </div>
@@ -197,11 +223,13 @@
                                     <!-- Description and details -->
                                     <div>
                                         <h3 class="sr-only">Description</h3>
-
+                                        {{-- UJI COBA--}}
+                                        <div id="calendar"></div>
+                                        {{-- UJI COBA--}}
                                         <div class="space-y-6">
-                                            <p class="text-base text-gray-900">The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: &quot;Black&quot;.
-                                                Need to add an
-                                                extra pop of color to your outfit? Our white tee has you covered.</p>
+                                            <p class="text-base text-gray-900">
+                                                {{ fake()->realText(500) }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -222,7 +250,9 @@
                                         <h2 class="text-sm font-medium text-gray-900">Details</h2>
 
                                         <div class="mt-4 space-y-6">
-                                            <p class="text-sm text-gray-600">The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming &quot;Charcoal Gray&quot; limited release.</p>
+                                            <p class="text-sm text-gray-600">
+                                                {{ fake()->realText() }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -234,4 +264,24 @@
             </div>
         </div>
     </div>
+
+
+    @push('scripts')
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+
+        {{--        <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/index.global.min.js'></script>--}}
+        {{--        <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/web-component@6.1.15/index.global.min.js'></script>--}}
+        {{--        <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/index.global.min.js'></script>--}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    events: @json($events),
+                });
+                calendar.render();
+            });
+        </script>
+        // todo calendar
+    @endpush
 </x-app-layout>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,8 +70,28 @@ class AssetController extends Controller
      */
     public function show(Asset $asset)
     {
-        // $asset->with('transactions')->get();
-        return view('asset.show', compact('asset'));
+        // Load accept and deny counts using the scope
+//        $asset = Asset::whereHas('transactions', function (Builder $query) {
+//            $query->where('approval', '=', 'accept');
+//        })->starRating()->find($asset->id);
+
+        $asset = Asset::with(['transactions' => function ($query) {
+            $query->where('approval', '=', 'accept');
+        }])->starRating()->find($asset->id);
+
+        // Calculate star rating
+        $asset->reviewer = $asset->accept + $asset->deny;
+        $asset->star_rating = $asset->reviewer > 0 ? round(($asset->accept / $asset->reviewer) * 5, 1) : 0;
+
+        $events = [];
+        foreach ($asset->transactions as $transaction) {
+            $events[] = [
+                'title' => $transaction->event,
+                'start' => Carbon::parse($transaction->start_date)->format('Y-m-d'),
+                'end' => Carbon::parse($transaction->finish_date)->format('Y-m-d'),
+            ];
+        }
+        return view('asset.show', compact('asset', 'events'));
     }
 
     /**
