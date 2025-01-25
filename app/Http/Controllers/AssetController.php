@@ -70,11 +70,7 @@ class AssetController extends Controller
      */
     public function show(Asset $asset)
     {
-        // Load accept and deny counts using the scope
-//        $asset = Asset::whereHas('transactions', function (Builder $query) {
-//            $query->where('approval', '=', 'accept');
-//        })->starRating()->find($asset->id);
-
+        // star rating
         $asset = Asset::with(['transactions' => function ($query) {
             $query->where('approval', '=', 'accept');
         }])->starRating()->find($asset->id);
@@ -91,7 +87,19 @@ class AssetController extends Controller
                 'end' => Carbon::parse($transaction->finish_date)->format('Y-m-d'),
             ];
         }
-        return view('asset.show', compact('asset', 'events'));
+        // star rating
+// todo: https://fullcalendar.io/docs/event-parsing
+        // disable dates
+        $disableDates = [];
+        foreach ($events as $event) {
+            $period = Carbon::parse($event['start'])->daysUntil(Carbon::parse($event['end']));
+            foreach ($period as $date) {
+                $disableDates[] = $date->format('Y-m-d');
+            }
+        }
+        // disable dates
+
+        return view('asset.show', compact('asset', 'events', 'disableDates'));
     }
 
     /**

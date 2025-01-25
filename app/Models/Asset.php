@@ -38,5 +38,4 @@ class Asset extends Model
         ]);
     }
 
-    // todo 5 star counting
 }

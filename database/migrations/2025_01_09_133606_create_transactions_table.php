@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId('asset_id')->constrained()->cascadeOnDelete();
             $table->enum('approval', ['wait', 'accept', 'deny'])->default('wait');
             $table->dateTime('start_date');
-            $table->dateTime('finish_date')->nullable();
+            $table->dateTime('finish_date');
             $table->foreignId('borrower_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
 
