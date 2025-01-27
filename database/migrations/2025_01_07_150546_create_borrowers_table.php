@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('borrowers', function (Blueprint $table) {
             $table->id();
+            $table->string('NIK')->unique();
             $table->foreignId('user_id')->unique()->nullable()->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->timestamps();

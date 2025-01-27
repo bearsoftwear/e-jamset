@@ -83,7 +83,7 @@
                                         </div>
                                     </div>
 
-                                    <form class="mt-10">
+                                    <form class="mt-10" method="get" action="{{ route('transaction.create') }}">
                                         <div>
                                             <h3 class="text-sm font-medium text-gray-900">Book Now</h3>
                                             {{-- date range picker --}}
@@ -100,9 +100,24 @@
                                                 <input id="flatpickr-range" type="text"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                                                     placeholder="Select date">
+                                                <input type="hidden" name="id" value="{{ $asset->id }}">
+                                                <input type="hidden" name="start_date" id="start_date">
+                                                <input type="hidden" name="finish_date" id="finish_date">
+                                                <input type="hidden" name="dateStr" id="dateStr">
                                             </div>
                                             {{-- date range picker --}}
+
+                                            {{-- <div class="mt-10">
+                                                <div class="flex items-center justify-between">
+                                                    <h3 class="text-sm font-medium text-gray-900">Size</h3>
+                                                    <a href="#"
+                                                        class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size
+                                                        guide</a>
+                                                </div>
+                                            </div> --}}
                                         </div>
+
+
 
                                         <button type="submit"
                                             class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
@@ -188,10 +203,15 @@
                     altFormat: "j F Y",
                     dateFormat: 'Y-m-d',
                     disable: @json($disableDates),
-
+                    onChange: function(selectedDates, dateStr, instance) {
+                        document.getElementById('start_date').value = instance.formatDate(selectedDates[0],
+                            'Y-m-d');
+                        document.getElementById('finish_date').value = instance.formatDate(selectedDates[1],
+                            'Y-m-d');
+                        document.getElementById('dateStr').value = dateStr;
+                    }
                 })
             });
         </script>
-        // todo calendar
     @endpush
 </x-app-layout>

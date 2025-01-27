@@ -11,6 +11,6 @@ class Borrower extends Model
     /** @use HasFactory<\Database\Factories\BorrowerFactory> */
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'name'];
+    protected $fillable = ['NIK', 'user_id', 'name'];
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 }

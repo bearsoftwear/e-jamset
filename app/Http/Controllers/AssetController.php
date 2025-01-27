@@ -78,26 +78,27 @@ class AssetController extends Controller
         // Calculate star rating
         $asset->reviewer = $asset->accept + $asset->deny;
         $asset->star_rating = $asset->reviewer > 0 ? round(($asset->accept / $asset->reviewer) * 5, 1) : 0;
+        // star rating
 
         $events = [];
-        foreach ($asset->transactions as $transaction) {
-            $events[] = [
-                'title' => $transaction->event,
-                'start' => Carbon::parse($transaction->start_date)->format('Y-m-d'),
-                'end' => Carbon::parse($transaction->finish_date)->format('Y-m-d'),
-            ];
-        }
-        // star rating
-// todo: https://fullcalendar.io/docs/event-parsing
-        // disable dates
         $disableDates = [];
-        foreach ($events as $event) {
-            $period = Carbon::parse($event['start'])->daysUntil(Carbon::parse($event['end']));
+        foreach ($asset->transactions as $transaction) {
+            $start = Carbon::parse($transaction->start_date);
+            $finish = Carbon::parse($transaction->finish_date);
+
+            // Disable dates
+            $period = $start->daysUntil($finish);
             foreach ($period as $date) {
                 $disableDates[] = $date->format('Y-m-d');
             }
+            // Disable dates
+
+            $events[] = [
+                'title' => $transaction->event,
+                'start' => $start->format('Y-m-d'),
+                'end' => $finish->addDay()->format('Y-m-d'),
+            ];
         }
-        // disable dates
 
         return view('asset.show', compact('asset', 'events', 'disableDates'));
     }

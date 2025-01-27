@@ -18,6 +18,7 @@ class BorrowerFactory extends Factory
     public function definition(): array
     {
         return [
+            'NIK' => fake()->numerify('##############'),
             'user_id' => fake()->boolean() ? User::factory()->create()->assignRole('borrower') : null,
             'name' => fake()->name,
         ];
