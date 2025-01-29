@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use App\Models\Borrower;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -18,13 +19,15 @@ class TransactionController extends Controller
     {
         // $transactions = Transaction::where('approval', 'wait')->with('borrower')->withWhereHas('asset', function (Builder $query) {
 
-        $transactions = Transaction::with('borrower')
-            ->withWhereHas('asset', function (Builder $query) {
-                $query->where('lander_id', Auth::id());
-            })->orderByDesc('approval')
-            ->get();
+        // $transactions = Transaction::with('borrower')
+        //     ->withWhereHas('asset', function (Builder $query) {
+        //         $query->where('lander_id', Auth::id());
+        //     })->orderByDesc('approval')
+        //     ->get();
 
-        return view('dashboard', compact('transactions'));
+        $transactions = Transaction::with('asset')->where('user_id', Auth::id())->orderByDesc('approval')->get();
+
+        return view('transaction.index', compact('transactions'));
     }
 
     /**
@@ -56,23 +59,36 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        // TODO: good, but dissapointed
+        $request->validate([
             'event' => 'required',
-            'booking_code' => 'required|unique:transactions',
-            //'NIK' => 'required|digits:14',
-            // 'name' => 'required',
+            'date' => 'required',
             'asset_id' => 'required|exists:assets,id',
             'start_date' => 'required|date',
             'finish_date' => 'required|date',
         ]);
 
-        $transaction = new Transaction($validatedData);
-        // $transaction->user_id = Auth::id();
-        $transaction->save();
+        $term = Carbon::parse($request->start_date)->diffInDays(Carbon::parse($request->finish_date)->addDay());
+        $rental_price = (int) Asset::where('id', $request->asset_id)->implode('rental_price'); // Asset::find($request->id)->get('rental_price');  //
+        $total_price = $term * $rental_price;
+        $booking_code = fake()->numerify('####'.now()->year.'####');
 
-        // TODO: ERROR
+        Transaction::create([
+            'event' => $request->event,
+            'booking_code' => $booking_code,
+            'asset_id' => $request->asset_id,
+            'start_date' => $request->start_date,
+            'finish_date' => $request->finish_date,
+            'user_id' => Auth::id(),
+            'term' => $term,
+            'rental_price' => $rental_price,
+            'total_price' => $total_price,
+        ]);
 
-        return redirect()->route('transactions.show', $request->asset_id)->with('success', 'Transaction created successfully.');
+        return redirect()->route('transaction.index')->with('success', 'Transaction created successfully. Booking Code: ' . $booking_code);
     }
 
     /**

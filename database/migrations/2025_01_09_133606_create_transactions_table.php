@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('approval', ['wait', 'accept', 'deny'])->default('wait');
             $table->dateTime('start_date');
             $table->dateTime('finish_date');
-            $table->foreignId('borrower_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('term');
             $table->string('rental_price');
             $table->string('total_price');

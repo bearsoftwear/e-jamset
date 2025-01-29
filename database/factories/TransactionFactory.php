@@ -5,6 +5,8 @@ namespace Database\Factories;
 use App\Models\Asset;
 use App\Models\Borrower;
 use App\Models\Transaction;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,14 +29,22 @@ class TransactionFactory extends Factory
               ->orWhereBetween('finish_date', [$start_date, $finish_date]);
         })->exists());
 
+        $asset = Asset::inRandomOrder()->first();
+        $term = Carbon::parse($start_date)->diffInDays(Carbon::parse($finish_date)->addDay());
+        $rental_price = (int) Asset::where('id', $asset)->implode('rental_price');
+        $total_price = $term * $rental_price;
+
         return [
             'event' => fake()->jobTitle(),
             'booking_code' => fake()->numerify('####' . now()->year . '####'),
-            'asset_id' => Asset::inRandomOrder()->first(),
-            'approval' => 'accept', // fake()->randomElement(['wait', 'accept', 'deny']),
+            'asset_id' => $asset,
+            'approval' => fake()->randomElement(['wait', 'accept', 'deny']),
             'start_date' => $start_date, // fake()->dateTimeThisYear()->format('Y-m-d'), // now()->format('Y-m-d'),
             'finish_date' => $finish_date, // fake()->dateTimeBetween('now', '+'.fake()->numberBetween(1,7).' days')->format('Y-m-d'),
-            'borrower_id' => fake()->boolean() ? Borrower::inRandomOrder(1)->first() : Borrower::factory()->create(),
+            'user_id' => fake()->boolean() ? User::inRandomOrder(1)->first() : User::factory()->create(),
+            'term' => $term,
+            'rental_price' => $rental_price,
+            'total_price' => $total_price,
         ];
     }
 

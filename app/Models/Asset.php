@@ -12,13 +12,13 @@ class Asset extends Model
     /** @use HasFactory<\Database\Factories\AssetFactory> */
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['lander_id', 'name', 'location', 'rental_price', 'image'];
+    protected $fillable = ['user_id', 'name', 'location', 'rental_price', 'image'];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
-    public function lander()
+    public function user()
     {
-        return $this->belongsTo(Lander::class);
+        return $this->belongsTo(User::class);
     }
 
     public function transactions()
@@ -37,5 +37,4 @@ class Asset extends Model
             },
         ]);
     }
-
 }

@@ -28,7 +28,7 @@ class AssetController extends Controller
             'transactions as waiting' => function (Builder $query) {
                 $query->where('approval', '=', 'wait');
             },
-        ])->where('lander_id', Auth::id())->get();
+        ])->where('user_id', Auth::id())->get();
 
         return view('asset.index', compact('assets'));
     }
@@ -55,7 +55,7 @@ class AssetController extends Controller
         ]);
 
         Asset::create([
-            'lander_id' => Auth::id(),
+            'user_id' => Auth::id(),
             'name' => $request->name,
             'location' => $request->location,
             'rental_price' => $request->rental_price,

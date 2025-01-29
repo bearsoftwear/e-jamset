@@ -11,12 +11,12 @@
                 </div>
 
                 <!-- Navigation Links -->
-                @role('admin|lander')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('transaction.index')" :active="request()->routeIs('transaction.*')">
+                        {{ __('Transaction') }}
                     </x-nav-link>
                 </div>
+                @role('admin|lander')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('assets.index')" :active="request()->routeIs('assets.*')">
                         {{ __('Assets') }}

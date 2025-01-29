@@ -2,8 +2,15 @@
 
 use App\Models\Asset;
 
-$assets = Asset::with('lander')->paginate(12);
+$assets = Asset::with('user')->paginate(12);
+
 ?>
+
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
 <x-app-layout>
     <div class="py-2">
@@ -13,20 +20,20 @@ $assets = Asset::with('lander')->paginate(12);
 
                     {{-- Assets List --}}
                     <div class="grid grid-cols-4 gap-4">
-                        @foreach($assets as $asset)
+                        @foreach ($assets as $asset)
                             <a href="{{ route('assets.show', $asset->id) }}">
                                 <div class="relative mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow">
                                     <div>
-                                        <img src="{{ $asset->image }}" class="w-full object-cover" alt=""/>
+                                        <img src="{{ $asset->image }}" class="w-full object-cover" alt="" />
                                     </div>
                                     <div class="absolute inset-0 z-10 bg-gradient-to-t from-black"></div>
                                     <div class="absolute inset-x-0 bottom-0 z-20 p-4">
-                                        <p class="text-sm text-white text-opacity-80">{{ $asset->lander->name }}
+                                        <p class="text-sm text-white text-opacity-80">{{ $asset->user->name }}
                                         </p>
                                         <h3 class="text-xl font-medium text-white">{{ $asset->name }}</h3>
                                         <p class="text-white text-opacity-80">{{ $asset->location }}</p>
                                         <p class="mt-2 text-xs text-white text-opacity-80">
-                                            {{ "Rp".number_format($asset->rental_price, 0, ',', '.'). " / Day" }}
+                                            {{ 'Rp' . number_format($asset->rental_price, 0, ',', '.') . ' / Day' }}
                                         </p>
                                     </div>
                                 </div>
