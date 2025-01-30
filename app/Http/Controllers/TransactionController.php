@@ -25,6 +25,7 @@ class TransactionController extends Controller
         //     })->orderByDesc('approval')
         //     ->get();
 
+        echo Auth::user()->getRoleNames();
         $transactions = Transaction::with('asset')->where('user_id', Auth::id())->orderByDesc('approval')->get();
 
         return view('transaction.index', compact('transactions'));
@@ -59,10 +60,6 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        // TODO: good, but dissapointed
         $request->validate([
             'event' => 'required',
             'date' => 'required',
@@ -88,7 +85,7 @@ class TransactionController extends Controller
             'total_price' => $total_price,
         ]);
 
-        return redirect()->route('transaction.index')->with('success', 'Transaction created successfully. Booking Code: ' . $booking_code);
+        return redirect()->route('transaction.index')->with('success', 'Transaction created successfully. Booking Code: '.$booking_code);
     }
 
     /**

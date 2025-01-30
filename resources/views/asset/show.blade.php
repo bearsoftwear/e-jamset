@@ -83,42 +83,45 @@
                                         </div>
                                     </div>
 
-                                    <form class="mt-10" method="post" action="{{ route('transaction.store') }}">
-                                        @csrf
-                                        <div class="mx-auto mt-5">
-                                            <div>
-                                                <x-input-label for="event" :value="__('Event')"/>
-                                                <x-text-input id="event" class="block mt-1 w-full" type="text" name="event" :value="old('event') ? old('event') : fake()->jobTitle()" required autofocus autocomplete="off"/>
-                                                <x-input-error :messages="$errors->get('event')" class="mt-2"/>
-                                            </div>
-                                        </div>
-                                        <div class="mx-auto mt-5">
-                                            <h3 class="text-sm font-medium text-gray-900">Date</h3>
-                                            {{-- date range picker --}}
-                                            <div class="relative max-w-sm mt-2">
-                                                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
-                                                         xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                         viewBox="0 0 20 20">
-                                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                                                    </svg>
+                                    @auth
+
+                                        <form class="mt-10" method="post" action="{{ route('transaction.store') }}">
+                                            @csrf
+                                            <div class="mx-auto mt-5">
+                                                <div>
+                                                    <x-input-label for="event" :value="__('Event')"/>
+                                                    <x-text-input id="event" class="block mt-1 w-full" type="text" name="event" :value="old('event') ? old('event') : fake()->jobTitle()" required autocomplete="off"/>
+                                                    <x-input-error :messages="$errors->get('event')" class="mt-2"/>
                                                 </div>
-                                                <input name="date" id="flatpickr-range" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date"
-                                                       value="{{  old('date') }}">
                                             </div>
-                                            <x-input-error :messages="$errors->get('date')" class="mt-2"/>
-                                            {{-- date range picker --}}
-                                        </div>
-                                        <input type="hidden" name="asset_id" value="{{ $asset->id }}">
-                                        <input type="hidden" name="start_date" id="start_date" value="{{ old('start_date') }}">
-                                        <input type="hidden" name="finish_date" id="finish_date" value="{{ old('finish_date') }}">
+                                            <div class="mx-auto mt-5">
+                                                <h3 class="text-sm font-medium text-gray-900">Date</h3>
+                                                {{-- date range picker --}}
+                                                <div class="relative max-w-sm mt-2">
+                                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true"
+                                                             xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                             viewBox="0 0 20 20">
+                                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <input name="date" id="flatpickr-range" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date"
+                                                           value="{{  old('date') }}">
+                                                </div>
+                                                <x-input-error :messages="$errors->get('date')" class="mt-2"/>
+                                                {{-- date range picker --}}
+                                            </div>
+                                            <input type="hidden" name="asset_id" value="{{ $asset->id }}">
+                                            <input type="hidden" name="start_date" id="start_date" value="{{ old('start_date') }}">
+                                            <input type="hidden" name="finish_date" id="finish_date" value="{{ old('finish_date') }}">
 
 
-                                        <button type="submit"
-                                                class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                            Reserve
-                                        </button>
-                                    </form>
+                                            <button type="submit"
+                                                    class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                Reserve
+                                            </button>
+                                        </form>
+                                    @endauth
                                 </div>
 
                                 <div

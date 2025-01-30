@@ -29,11 +29,13 @@ class DatabaseSeeder extends Seeder
         ])->assignRole('lander');
 
         User::factory(10)->create()->each(function ($user) {
-            $user->assignRole('lander');
+            $user->syncRoles('lander');
         });
-        Asset::factory(50)->create();
-        User::factory(10)->create();
-        Transaction::factory(500)->create();
+        Asset::factory(20)->create();
+        /*User::factory(10)->create()->each(function ($user) {
+            $user->syncRoles('borrower');
+        });*/
+        Transaction::factory(50)->create();
 
         User::factory()->create([
             'name' => 'Admin '.fake()->name(),

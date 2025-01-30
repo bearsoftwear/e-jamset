@@ -22,7 +22,6 @@
 
                         <x-primary-button class="mt-4">
                             {{ __('Submit') }}
-                            {{--TODO: MAKE IT WORK--}}
                         </x-primary-button>
                     </div>
                 </form>
