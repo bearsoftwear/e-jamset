@@ -5,30 +5,76 @@
                 <div class="p-6 text-gray-900">
                     <div class="bg-white">
                         <div>
-                            <div class="mx-auto flex-col max-w-2xl items-center px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                                <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                                    {{ $asset->name }}</h1>
-                                <h3 class="text-gray-500">{{ $asset->location }}</h3>
-                            </div>
-                            <!-- Image gallery -->
-                            <div
-                                    class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-                                <img src="{{ $asset->image }}"
-                                     alt="Two each of gray, white, and black shirts laying flat."
-                                     class="hidden size-full rounded-lg object-cover lg:block">
-                                <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                                    <img src="{{ $asset->image }}" alt="Model wearing plain black basic tee."
-                                         class="aspect-[3/2] w-full rounded-lg object-cover">
-                                    <img src="{{ $asset->image }}" alt="Model wearing plain gray basic tee."
-                                         class="aspect-[3/2] w-full rounded-lg object-cover">
+                            <div class="flex flex-row">
+                                <div class="flex-col max-w-2xl items-center px-4 sm:px-6 lg:max-w-7xl lg:px-8 basis-2/3">
+                                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                                        {{ $asset->name }}
+                                    </h1>
+                                    <h3 class="text-gray-500">{{ $asset->location }}</h3>
                                 </div>
-                                <img src="{{ $asset->image }}" alt="Model wearing plain white basic tee."
-                                     class="aspect-[4/5] size-full object-cover sm:rounded-lg lg:aspect-auto">
+                                <div class="flex basis-1/3 items-center justify-end">
+                                    <x-button-edit href="#" class="sm:ml-3" x-data="" x-on:click.prevent="$dispatch('open-modal', 'edit-asset')">
+                                        Edit
+                                    </x-button-edit>
+                                    {{-- TODO: LANJUTKAN --}}
+                                    {{-- MODAL --}}
+                                    <x-modal name="edit-asset" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                                        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
+                                            @csrf
+                                            @method('delete')
+
+                                            <h2 class="text-lg font-medium text-gray-900">
+                                                {{ __('Are you sure you want to delete your account?') }}
+                                            </h2>
+
+                                            <p class="mt-1 text-sm text-gray-600">
+                                                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                                            </p>
+
+                                            <div class="mt-6">
+                                                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only"/>
+
+                                                <x-text-input
+                                                        id="password"
+                                                        name="password"
+                                                        type="password"
+                                                        class="mt-1 block w-3/4"
+                                                        placeholder="{{ __('Password') }}"
+                                                />
+
+                                                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2"/>
+                                            </div>
+
+                                            <div class="mt-6 flex justify-end">
+                                                <x-secondary-button x-on:click="$dispatch('close')">
+                                                    {{ __('Cancel') }}
+                                                </x-secondary-button>
+
+                                                <x-danger-button class="ms-3">
+                                                    {{ __('Delete Account') }}
+                                                </x-danger-button>
+                                            </div>
+                                        </form>
+                                    </x-modal>
+                                    {{-- MODAL --}}
+                                    <x-danger-button class="sm:ml-3">
+                                        Delete
+                                    </x-danger-button>
+                                </div>
+                            </div>
+
+                            <!-- Image gallery -->
+                            <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+                                <img src="{{ $asset->image }}" alt="Two each of gray, white, and black shirts laying flat." class="hidden size-full rounded-lg object-cover lg:block">
+                                <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+                                    <img src="{{ $asset->image }}" alt="Model wearing plain black basic tee." class="aspect-[3/2] w-full rounded-lg object-cover">
+                                    <img src="{{ $asset->image }}" alt="Model wearing plain gray basic tee." class="aspect-[3/2] w-full rounded-lg object-cover">
+                                </div>
+                                <img src="{{ $asset->image }}" alt="Model wearing plain white basic tee." class="aspect-[4/5] size-full object-cover sm:rounded-lg lg:aspect-auto">
                             </div>
 
                             <!-- Product info -->
-                            <div
-                                    class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+                            <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
                                 <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                                     {{-- CALENDAR --}}
                                     <div id="calendar"></div>

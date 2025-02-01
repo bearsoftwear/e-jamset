@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('location');
             $table->decimal('rental_price', 10, 2);
             $table->string('image');
+            $table->boolean('is_available')->default(true);
             $table->timestamps();
 
             $table->softDeletes();

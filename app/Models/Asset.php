@@ -12,7 +12,7 @@ class Asset extends Model
     /** @use HasFactory<\Database\Factories\AssetFactory> */
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'name', 'location', 'rental_price', 'image'];
+    protected $fillable = ['user_id', 'name', 'location', 'rental_price', 'image', 'is_available'];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 

@@ -25,7 +25,6 @@ class TransactionController extends Controller
         //     })->orderByDesc('approval')
         //     ->get();
 
-        echo Auth::user()->getRoleNames();
         $transactions = Transaction::with('asset')->where('user_id', Auth::id())->orderByDesc('approval')->get();
 
         return view('transaction.index', compact('transactions'));
