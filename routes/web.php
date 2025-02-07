@@ -25,6 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-// TODO: give different about admin lander and borrower after login, and i have that /dashboard, how to use proper /dashboard?
+// TODO: approval 

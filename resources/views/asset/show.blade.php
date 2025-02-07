@@ -12,55 +12,98 @@
                                     </h1>
                                     <h3 class="text-gray-500">{{ $asset->location }}</h3>
                                 </div>
-                                <div class="flex basis-1/3 items-center justify-end">
-                                    <x-button-edit href="#" class="sm:ml-3" x-data="" x-on:click.prevent="$dispatch('open-modal', 'edit-asset')">
-                                        Edit
-                                    </x-button-edit>
-                                    {{-- TODO: LANJUTKAN --}}
-                                    {{-- MODAL --}}
-                                    <x-modal name="edit-asset" :show="$errors->userDeletion->isNotEmpty()" focusable>
-                                        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
-                                            @csrf
-                                            @method('delete')
+                                @if(auth()->user()->hasRole('lander') && $asset->user_id === auth()->id())
+                                    <div class="flex basis-1/3 items-center justify-end">
+                                        <x-button-edit href="#" class="sm:ml-3" x-data="" x-on:click.prevent="$dispatch('open-modal', 'edit-asset')">
+                                            Edit
+                                        </x-button-edit>
+                                        <x-danger-button class="sm:ml-3" x-data="" x-on:click.prevent="$dispatch('open-modal', 'delete-asset')">
+                                            Delete
+                                        </x-danger-button>
+                                        {{-- MODAL EDIT --}}
+                                        <x-modal name="edit-asset" :show="$errors->assetStore->isNotEmpty()" focusable>
+                                            <form method="post" action="{{ route('assets.update', $asset->id) }}" class="p-6">
+                                                @csrf
+                                                @method('patch')
 
-                                            <h2 class="text-lg font-medium text-gray-900">
-                                                {{ __('Are you sure you want to delete your account?') }}
-                                            </h2>
+                                                <h2 class="text-lg font-medium text-gray-900">
+                                                    {{ __('Asset Information') }}
+                                                </h2>
 
-                                            <p class="mt-1 text-sm text-gray-600">
-                                                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-                                            </p>
+                                                <p class="mt-1 text-sm text-gray-600">
+                                                    {{ __("Update your asset information.") }}
+                                                </p>
 
-                                            <div class="mt-6">
-                                                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only"/>
+                                                <div class="mt-6">
+                                                    <x-input-label for="name" :value="__('Name')"/>
+                                                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $asset->name)" required autocomplete="off"/>
+                                                    <x-input-error class="mt-2" :messages="$errors->get('name')"/>
+                                                </div>
 
-                                                <x-text-input
-                                                        id="password"
-                                                        name="password"
-                                                        type="password"
-                                                        class="mt-1 block w-3/4"
-                                                        placeholder="{{ __('Password') }}"
-                                                />
+                                                <div class="mt-6">
+                                                    <x-input-label for="location" :value="__('Location')"/>
+                                                    <x-text-input id="location" name="location" type="text" class="mt-1 block w-full" :value="old('location', $asset->location)" required autocomplete="off"/>
+                                                    <x-input-error class="mt-2" :messages="$errors->get('location')"/>
+                                                </div>
 
-                                                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2"/>
-                                            </div>
+                                                <div class="mt-6">
+                                                    <x-input-label for="rental_price" :value="__('Rental Price')"/>
+                                                    <x-text-input id="rental_price" name="rental_price" type="text" class="mt-1 block w-full" :value="old('rental_price', $asset->rental_price)" required autocomplete="off"/>
+                                                    <x-input-error class="mt-2" :messages="$errors->get('rental_price')"/>
+                                                </div>
 
-                                            <div class="mt-6 flex justify-end">
-                                                <x-secondary-button x-on:click="$dispatch('close')">
-                                                    {{ __('Cancel') }}
-                                                </x-secondary-button>
+                                                <div class="mt-6">
+                                                    <x-input-label for="image" :value="__('Image')"/>
+                                                    <x-text-input id="image" name="image" type="text" class="mt-1 block w-full" :value="old('image', $asset->image)" required autocomplete="off"/>
+                                                    <x-input-error class="mt-2" :messages="$errors->get('Image')"/>
+                                                </div>
 
-                                                <x-danger-button class="ms-3">
-                                                    {{ __('Delete Account') }}
-                                                </x-danger-button>
-                                            </div>
-                                        </form>
-                                    </x-modal>
-                                    {{-- MODAL --}}
-                                    <x-danger-button class="sm:ml-3">
-                                        Delete
-                                    </x-danger-button>
-                                </div>
+                                                <div class="mt-6 flex justify-end">
+                                                    <x-secondary-button x-on:click="$dispatch('close')">
+                                                        {{ __('Cancel') }}
+                                                    </x-secondary-button>
+
+                                                    <x-primary-button class="ms-3">
+                                                        {{ __('Update Asset') }}
+                                                    </x-primary-button>
+                                                </div>
+                                            </form>
+                                        </x-modal>
+
+                                        <x-modal name="delete-asset" :show="$errors->assetDelete->isNotEmpty()" focusable>
+                                            <form method="post" action="{{ route('assets.destroy', $asset->id) }}" class="p-6">
+                                                @csrf
+                                                @method('delete')
+
+                                                <h2 class="text-lg font-medium text-gray-900">
+                                                    {{ __('Are you sure you want to delete your asset?') }}
+                                                </h2>
+
+                                                <p class="mt-1 text-sm text-gray-600">
+                                                    {{ __('Once your asset is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your asset.') }}
+                                                </p>
+
+                                                <div class="mt-6">
+                                                    <x-input-label for="password" value="{{ __('Password') }}" class="sr-only"/>
+                                                    <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="{{ __('Password') }}"/>
+                                                    <x-input-error :messages="$errors->assetDelete->get('password')" class="mt-2"/>
+                                                </div>
+
+                                                <div class="mt-6 flex justify-end">
+                                                    <x-secondary-button x-on:click="$dispatch('close')">
+                                                        {{ __('Cancel') }}
+                                                    </x-secondary-button>
+
+                                                    <x-danger-button class="ms-3">
+                                                        {{ __('Delete Asset') }}
+                                                    </x-danger-button>
+                                                </div>
+                                            </form>
+                                        </x-modal>
+                                        {{-- MODAL --}}
+                                    </div>
+                                @endif
+
                             </div>
 
                             <!-- Image gallery -->

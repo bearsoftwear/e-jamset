@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
-use App\Models\Borrower;
 use App\Models\Transaction;
 use Carbon\Carbon;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,15 +15,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        // $transactions = Transaction::where('approval', 'wait')->with('borrower')->withWhereHas('asset', function (Builder $query) {
-
-        // $transactions = Transaction::with('borrower')
-        //     ->withWhereHas('asset', function (Builder $query) {
-        //         $query->where('lander_id', Auth::id());
-        //     })->orderByDesc('approval')
-        //     ->get();
-
-        $transactions = Transaction::with('asset')->where('user_id', Auth::id())->orderByDesc('approval')->get();
+        if (Auth::user()->hasRole('admin')) {
+            $transactions = Transaction::with('asset', 'user')->orderByDesc('approval')->get();
+        } else {
+            $transactions = Transaction::with('asset')->where('user_id', Auth::id())->orderByDesc('approval')->get();
+        }
 
         return view('transaction.index', compact('transactions'));
     }

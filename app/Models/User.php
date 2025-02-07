@@ -47,8 +47,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function borrower()
+    public function transactions()
     {
-        return $this->hasOne(Borrower::class);
+        return $this->hasMany(Transaction::class);
     }
 }

@@ -47,7 +47,7 @@ class AssetController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
+        $request->validateWithBag('assetStore', [
             'name' => 'required',
             'location' => 'required',
             'rental_price' => 'required',
@@ -62,7 +62,7 @@ class AssetController extends Controller
             'image' => $request->image,
         ]);
 
-        return redirect(route('assets.index'));
+        return redirect(route('assets.index'))->with('success', 'Asset created successfully');
     }
 
     /**
@@ -73,7 +73,7 @@ class AssetController extends Controller
         // star rating
         $asset = Asset::with(['transactions' => function ($query) {
             $query->where('approval', '=', 'accept');
-        }])->starRating()->find($asset->id);
+        }])->starRating()->findOrFail($asset->id);
 
         // Calculate star rating
         $asset->reviewer = $asset->accept + $asset->deny;
@@ -116,14 +116,34 @@ class AssetController extends Controller
      */
     public function update(Request $request, Asset $asset)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'location' => 'required',
+            'rental_price' => 'required|numeric',
+            'image' => 'required',
+        ]);
+
+        $asset->update([
+            'name' => $request->name,
+            'location' => $request->location,
+            'rental_price' => $request->rental_price,
+            'image' => $request->image,
+        ]);
+
+        return redirect(route('assets.index'))->with('success', 'Asset updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Asset $asset)
+    public function destroy(Request $request, Asset $asset)
     {
-        //
+        $request->validateWithBag('assetDelete', [
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $asset->delete();
+
+        return redirect(route('assets.index'))->with('success', 'Asset deleted');
     }
 }

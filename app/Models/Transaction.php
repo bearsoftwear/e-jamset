@@ -20,11 +20,11 @@ class Transaction extends Model
 
     public function asset()
     {
-        return $this->belongsTo(Asset::class);
+        return $this->belongsTo(Asset::class)->withTrashed();
     }
 
-    public function borrower()
+    public function user() // borrower
     {
-        return $this->belongsTo(Borrower::class);
+        return $this->belongsTo(User::class)->with('roles');
     }
 }
