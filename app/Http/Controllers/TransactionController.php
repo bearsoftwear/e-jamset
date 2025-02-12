@@ -102,7 +102,15 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        //
+        $request->validate([
+            'approval' => 'required',
+        ]);
+
+        $transaction->update([
+            'approval' => $request->approval,
+        ]);
+
+        return redirect()->route('transaction.index')->with('success', 'Transaction updated successfully.');
     }
 
     /**

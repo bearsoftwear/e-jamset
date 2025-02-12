@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Asset;
-use App\Models\Borrower;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
@@ -23,20 +22,20 @@ class TransactionFactory extends Factory
     {
         do {
             $start_date = fake()->dateTimeThisMonth()->format('Y-m-d');
-            $finish_date = date('Y-m-d', strtotime($start_date . ' +1 day'));
+            $finish_date = date('Y-m-d', strtotime($start_date.' +1 day'));
         } while (Transaction::where(function ($query) use ($start_date, $finish_date) {
             $query->whereBetween('start_date', [$start_date, $finish_date])
-              ->orWhereBetween('finish_date', [$start_date, $finish_date]);
+                ->orWhereBetween('finish_date', [$start_date, $finish_date]);
         })->exists());
 
         $asset = Asset::inRandomOrder()->first();
         $term = Carbon::parse($start_date)->diffInDays(Carbon::parse($finish_date)->addDay());
-        $rental_price = (int) Asset::where('id', $asset)->implode('rental_price');
+        $rental_price = (int) Asset::where('id', $asset->id)->implode('rental_price');
         $total_price = $term * $rental_price;
 
         return [
             'event' => fake()->jobTitle(),
-            'booking_code' => fake()->numerify('####' . now()->year . '####'),
+            'booking_code' => fake()->numerify('####'.now()->year.'####'),
             'asset_id' => $asset,
             'approval' => fake()->randomElement(['wait', 'accept', 'deny']),
             'start_date' => $start_date, // fake()->dateTimeThisYear()->format('Y-m-d'), // now()->format('Y-m-d'),

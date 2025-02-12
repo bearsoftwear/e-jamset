@@ -27,17 +27,35 @@
                                     <td class="px-6 py-4">{{ $transaction->booking_code }}</td>
                                     <td class="px-6 py-4">{{ $transaction->asset->name }}</td>
                                     <td class="px-6 py-4">
-                                        <select id="example8" class="text-xs block w-full border-0 border-b-2 border-gray-200 focus:border-primary-500 focus:ring-0 disabled:cursor-not-allowed">
-                                            <option value="" @selected($transaction->approval == 'accept')>Accept</option>
-                                            <option value="" @selected($transaction->approval == 'wait')>Wait</option>
-                                            <option value="" @selected($transaction->approval == 'deny')>Deny</option>
-                                        </select>
-                                        // TODO: IF SELECTED UPDATE STATUS
+                                        <form x-data="{
+                                                selectedTransaction: '{{ $transaction->approval }}',
+                                                previousTransaction: '{{ $transaction->approval }}'
+                                            }"
+                                              x-init="$watch('selectedTransaction', value => {
+                                                if (value !== previousTransaction) {
+                                                    if (confirm('Are you sure you want to update this transaction?')) {
+                                                        $el.submit();
+                                                    } else {
+                                                        selectedTransaction = previousTransaction;
+                                                    }
+                                                }
+                                            })"
+                                              method="POST"
+                                              action="{{ route('transaction.update', $transaction->id) }}"
+                                        >
+                                            @csrf
+                                            @method('PATCH')
+                                            <select name="approval" x-model="selectedTransaction" class="text-xs block w-24 border-0 border-b-2 border-gray-200 focus:border-primary-500 focus:ring-0 disabled:cursor-not-allowed">
+                                                <option value="accept">Accept</option>
+                                                <option value="wait">Wait</option>
+                                                <option value="deny">Deny</option>
+                                            </select>
+                                        </form>
                                     </td>
                                     <td class="px-6 py-4">{{ $transaction->start_date }}</td>
                                     <td class="px-6 py-4">{{ $transaction->finish_date }}</td>
                                     <td class="px-6 py-4">{{ $transaction->user->name }}</td>
-                                    <td class="px-6 py-4">{{ $transaction->total_price }}</td>
+                                    <td class="px-6 py-4">{{ 'Rp' . number_format($transaction->total_price, 0, ',', '.') }}</td>
                                     {{-- <td class="flex justify-end gap-4 px-6 py-4 font-medium"><a href="">Delete</a><a href="" class="text-primary-700">Edit</a></td> --}}
                                 </tr>
                             @endforeach
@@ -49,4 +67,21 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            function updateTransactionStatus(transactionId, status) {
+                console.log(transactionId, status);
+                axios.put(`{{ route('transaction.update', '') }}/${transactionId}`, {
+                    _token: '{{ csrf_token() }}',
+                    approval: status
+                })
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+        </script>
+    @endpush
 </x-app-layout>

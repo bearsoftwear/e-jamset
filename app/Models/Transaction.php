@@ -11,7 +11,7 @@ class Transaction extends Model
     /** @use HasFactory<\Database\Factories\TransactionFactory> */
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['event', 'booking_code', 'asset_id', 'start_date', 'finish_date', 'user_id', 'term', 'rental_price', 'total_price'];
+    protected $fillable = ['event', 'booking_code', 'asset_id', 'approval', 'start_date', 'finish_date', 'user_id', 'term', 'rental_price', 'total_price'];
 
     protected $casts = ['start_date' => 'datetime', 'finish_date' => 'datetime'];
 
