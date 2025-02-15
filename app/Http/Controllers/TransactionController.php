@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Asset;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,6 +18,10 @@ class TransactionController extends Controller
     {
         if (Auth::user()->hasRole('admin')) {
             $transactions = Transaction::with('asset', 'user')->orderByDesc('approval')->get();
+        } elseif (Auth::user()->hasRole('lander')) {
+            $transactions = Transaction::where('user_id', Auth::id())->orWhereHas('asset', function (Builder $query) {
+                $query->where('user_id', Auth::id());
+            })->orderByDesc('approval')->orderBy('asset_id')->get();
         } else {
             $transactions = Transaction::with('asset')->where('user_id', Auth::id())->orderByDesc('approval')->get();
         }

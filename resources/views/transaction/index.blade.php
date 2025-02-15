@@ -27,6 +27,7 @@
                                     <td class="px-6 py-4">{{ $transaction->booking_code }}</td>
                                     <td class="px-6 py-4">{{ $transaction->asset->name }}</td>
                                     <td class="px-6 py-4">
+                                        @role('admin|lander')
                                         <form x-data="{
                                                 selectedTransaction: '{{ $transaction->approval }}',
                                                 previousTransaction: '{{ $transaction->approval }}'
@@ -45,12 +46,51 @@
                                         >
                                             @csrf
                                             @method('PATCH')
-                                            <select name="approval" x-model="selectedTransaction" class="text-xs block w-24 border-0 border-b-2 border-gray-200 focus:border-primary-500 focus:ring-0 disabled:cursor-not-allowed">
+                                            @php
+                                                $approval = [
+                                                    'accept' => 'border-green-200',
+                                                    'wait' => 'border-yellow-200',
+                                                    'deny' => 'border-red-200',
+                                                ];
+                                            @endphp
+
+                                            <select name="approval" x-model="selectedTransaction" class="text-xs block w-24 border-0 border-b-2 {{ $approval[$transaction->approval] ?? '' }} focus:border-primary-500 focus:ring-0 disabled:cursor-not-allowed" {{ $transaction->user_id == Auth::id() && $transaction->asset->user_id !== Auth::id() ? "disabled" : "" }}>
                                                 <option value="accept">Accept</option>
                                                 <option value="wait">Wait</option>
                                                 <option value="deny">Deny</option>
                                             </select>
                                         </form>
+                                        @else
+                                            @if ($transaction->approval == 'accept')
+                                                <span
+                                                        class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                         fill="currentColor" class="h-3 w-3">
+                                                        <path fill-rule="evenodd"
+                                                              d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                                              clip-rule="evenodd"/>
+                                                    </svg>
+                                                    Accept
+                                                </span>
+                                            @elseif($transaction->approval == 'wait')
+                                                <span
+                                                        class="inline-flex items-center gap-1 rounded-full bg-yellow-50 px-2 py-1 text-xs font-semibold text-yellow-600">
+                                                    <span class="h-1.5 w-1.5 rounded-full bg-yellow-600"></span>
+                                                    Wait
+                                                </span>
+                                            @else
+                                                <span
+                                                        class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                         fill="currentColor" class="h-3 w-3">
+                                                        <path
+                                                                d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"/>
+                                                    </svg>
+                                                    Deny
+                                                </span>
+                                            @endif
+                                            @endrole
+
                                     </td>
                                     <td class="px-6 py-4">{{ $transaction->start_date }}</td>
                                     <td class="px-6 py-4">{{ $transaction->finish_date }}</td>

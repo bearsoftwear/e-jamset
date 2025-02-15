@@ -173,7 +173,6 @@
                                     </div>
 
                                     @auth
-
                                         <form class="mt-10" method="post" action="{{ route('transaction.store') }}">
                                             @csrf
                                             <div class="mx-auto mt-5">

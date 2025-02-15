@@ -35,7 +35,15 @@ class DatabaseSeeder extends Seeder
         /*User::factory(10)->create()->each(function ($user) {
             $user->syncRoles('borrower');
         });*/
-        Transaction::factory(50)->create();
+        User::factory()->create([
+            'name' => 'Borrower '.fake()->name(),
+            'email' => 'borrower@gmail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'),
+            'remember_token' => Str::random(10),
+        ])->assignRole('borrower');
+
+        Transaction::factory(500)->create();
 
         User::factory()->create([
             'name' => 'Admin '.fake()->name(),

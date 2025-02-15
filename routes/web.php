@@ -27,4 +27,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-// TODO: approval 
+// DELETE LANDER AND BORROWER MODELS
+// borrower can't access assets index
+// TODO: Manage users (Lenders and Borrowers).

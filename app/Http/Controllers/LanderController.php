@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lander;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LanderController extends Controller
@@ -12,7 +12,7 @@ class LanderController extends Controller
      */
     public function index()
     {
-        return Lander::with('assets')->get();
+        return User::role('lander')->with('assets')->get();
     }
 
     /**

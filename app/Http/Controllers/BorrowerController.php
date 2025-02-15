@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Borrower;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BorrowerController extends Controller
@@ -12,7 +13,8 @@ class BorrowerController extends Controller
      */
     public function index()
     {
-        //
+        return User::role('borrower')->with('assets')->get();
+
     }
 
     /**
